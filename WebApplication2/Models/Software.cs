@@ -11,9 +11,12 @@ namespace WebApplication2.Models
     {
         [Key]
         public string Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
 
         public CompanyUser Company { get; set; }
+        public List<Plugin> AvailablePlugins { get; set; }
     }
 }
