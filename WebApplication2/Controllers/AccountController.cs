@@ -144,6 +144,57 @@ namespace WebApplication2.Controllers
         }
 
         //
+        // GET: /Account/RegisterCompany
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterCompany(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        //
+        // POST: /Account/RegisterUser
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterCompany(RegisterCompanyViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                // TODO: edit model for company needs
+                CompanyUser companyUser = new CompanyUser {
+                    Name = model.CompanyName,
+                    City = model.City,
+                    Postcode = model.Postcode,
+                    Street = model.Street
+                };
+                _context.Add<CompanyUser>(companyUser);
+                await _context.SaveChangesAsync();
+
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, EntityType = Models.UserEntities.UserEntityType.Company, EntityId = companyUser.Id };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+                    // Send an email with this link
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation(3, "User created a new account with password.");
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
         // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
