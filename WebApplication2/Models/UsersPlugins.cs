@@ -7,16 +7,11 @@ using WebApplication2.Models.UserEntities;
 
 namespace WebApplication2.Models
 {
-    public class Plugin
+    public class UsersPlugins
     {
         [Key]
         public string Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Description { get; set; }
-        public CompanyUser Company { get; set; }
-        public Software RelatedSoftware { get; set; }
-        
+        public NormalUser User { get; set; }
+        public Plugin Plugin { get; set; }
     }
 }

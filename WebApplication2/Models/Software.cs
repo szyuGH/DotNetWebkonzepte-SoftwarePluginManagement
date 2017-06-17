@@ -17,6 +17,5 @@ namespace WebApplication2.Models
         public string Description { get; set; }
 
         public CompanyUser Company { get; set; }
-        public List<Plugin> AvailablePlugins { get; set; }
     }
 }

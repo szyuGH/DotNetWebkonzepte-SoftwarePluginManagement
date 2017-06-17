@@ -27,5 +27,6 @@ namespace WebApplication2.Data
 
         public DbSet<WebApplication2.Models.Software> Software { get; set; }
         public DbSet<WebApplication2.Models.Plugin> Plugin { get; set; }
+        public DbSet<UsersPlugins> UserPlugin { get; set; }
     }
 }
