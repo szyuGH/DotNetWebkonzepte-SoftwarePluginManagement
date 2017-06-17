@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using WebApplication2.Data;
+using WebApplication2.Models.UserEntities;
 
 namespace WebApplication2.Data.Migrations
 {

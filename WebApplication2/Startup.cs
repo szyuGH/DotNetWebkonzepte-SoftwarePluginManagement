@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using WebApplication2.Data;
 using WebApplication2.Models;
 using WebApplication2.Services;
+using WebApplication2.AuthorizationPolicies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication2
 {
@@ -47,11 +49,25 @@ namespace WebApplication2
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthorization(options =>
+            {
+                //options.AddPolicy("TestAuth", p =>
+                //{
+                //    p.RequireAuthenticatedUser();
+
+                //    p.RequireAssertion(h => { return h.User.Identity; });
+                //    p.Build();
+                //});
+                options.AddPolicy("TestAuth", p => p.AddRequirements(new EntityTypeRequirement(Models.UserEntities.UserEntityType.NormalUser)));
+            });
+
             services.AddMvc();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            services.AddSingleton<IAuthorizationHandler, EntityTypeHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

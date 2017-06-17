@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Models;
+using WebApplication2.Models.UserEntities;
 
 namespace WebApplication2.Data
 {
@@ -24,6 +25,10 @@ namespace WebApplication2.Data
 
             
         }
+
+        public DbSet<NormalUser> NormalUser { get; set; }
+        public DbSet<CompanyUser> CompanyUser { get; set; }
+
 
         public DbSet<WebApplication2.Models.Software> Software { get; set; }
         public DbSet<WebApplication2.Models.Plugin> Plugin { get; set; }
