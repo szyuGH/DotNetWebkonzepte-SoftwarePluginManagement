@@ -8,9 +8,10 @@ using WebApplication2.Data;
 namespace WebApplication2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170617153602_CreateLicenseKeyModel")]
+    partial class CreateLicenseKeyModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -327,7 +328,7 @@ namespace WebApplication2.Data.Migrations
             modelBuilder.Entity("WebApplication2.Models.LicenseKey", b =>
                 {
                     b.HasOne("WebApplication2.Models.Software", "Software")
-                        .WithMany("LicenseKeys")
+                        .WithMany()
                         .HasForeignKey("SoftwareId");
 
                     b.HasOne("WebApplication2.Models.UserEntities.NormalUser", "User")

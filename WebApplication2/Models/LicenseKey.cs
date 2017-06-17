@@ -7,17 +7,12 @@ using WebApplication2.Models.UserEntities;
 
 namespace WebApplication2.Models
 {
-    public class Software
+    public class LicenseKey
     {
         [Key]
         public string Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Description { get; set; }
-
-        public CompanyUser Company { get; set; }
-
-        public ICollection<LicenseKey> LicenseKeys { get; set; }
+        public Software Software { get; set; }
+        public NormalUser User { get; set; }
+        public string Key { get; set; }
     }
 }
