@@ -1,0 +1,37 @@
+@model List<Tuple<ApplicationUser, WebApplication2.Models.UserEntities.EditorUser>>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Editors</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (Tuple<ApplicationUser, WebApplication2.Models.UserEntities.EditorUser> item in Model) {
+        <tr>
+            <td>@item.Item1.UserName</td>
+            <td>@item.Item1.Email</td>
+            <td>@item.Item2.FirstName</td>
+            <td>@item.Item2.LastName</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Item1.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Item1.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

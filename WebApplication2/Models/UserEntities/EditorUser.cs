@@ -9,5 +9,7 @@ namespace WebApplication2.Models.UserEntities
     {
         public string Id { get; set; }
         public CompanyUser Company { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }
