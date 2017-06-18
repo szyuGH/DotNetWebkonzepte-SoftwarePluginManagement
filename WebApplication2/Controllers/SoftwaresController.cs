@@ -8,22 +8,36 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication2.Data;
 using WebApplication2.Models;
 using Microsoft.AspNetCore.Authorization;
+using WebApplication2.Services;
+using WebApplication2.Models.UserEntities;
 
 namespace WebApplication2.Controllers
 {
     public class SoftwaresController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUserEntityLoader _userEntityServices;
 
-        public SoftwaresController(ApplicationDbContext context)
+        public SoftwaresController(ApplicationDbContext context, IUserEntityLoader userEntityServices)
         {
-            _context = context;    
+            _context = context;
+            _userEntityServices = userEntityServices;
         }
 
         // GET: Softwares
         public async Task<IActionResult> Index()
         {
             return View(await _context.Software.ToListAsync());
+        }
+
+        // GET: OwnSoftwares
+        public async Task<IActionResult> Own()
+        {
+            CompanyUser company = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User)) as CompanyUser;
+            if (company == null)
+                return NotFound();
+            List<Software> ownSoftware = await _context.Software.Where(s => s.Company == company).ToListAsync();
+            return View(ownSoftware);
         }
 
         // GET: Softwares/Details/5
