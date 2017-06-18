@@ -28,6 +28,7 @@ namespace WebApplication2.Data
 
         public DbSet<NormalUser> NormalUser { get; set; }
         public DbSet<CompanyUser> CompanyUser { get; set; }
+        public DbSet<EditorUser> EditorUser { get; set; }
 
 
         public DbSet<WebApplication2.Models.Software> Software { get; set; }

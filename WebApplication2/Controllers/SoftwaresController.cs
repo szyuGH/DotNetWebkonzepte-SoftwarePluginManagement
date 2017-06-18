@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication2.Controllers
 {
-    [Authorize("TestAuth")]
     public class SoftwaresController : Controller
     {
         private readonly ApplicationDbContext _context;

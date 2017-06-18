@@ -58,7 +58,7 @@ namespace WebApplication2
                 //    p.RequireAssertion(h => { return h.User.Identity; });
                 //    p.Build();
                 //});
-                options.AddPolicy("TestAuth", p => p.AddRequirements(new EntityTypeRequirement(Models.UserEntities.UserEntityType.NormalUser)));
+                options.AddPolicy("CompanyUser", p => p.AddRequirements(new EntityTypeRequirement(Models.UserEntities.UserEntityType.Company)));
             });
 
             services.AddMvc();
