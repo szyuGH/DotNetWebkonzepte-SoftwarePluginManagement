@@ -21,7 +21,6 @@ namespace WebApplication2.AuthorizationPolicies
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, EntityTypeRequirement requirement)
         {
             ApplicationUser user = await _userManager.GetUserAsync(context.User);
-
             if (user != null && user.EntityType == requirement.RequiredType && user.EntityId != null)
                 context.Succeed(requirement);
         }

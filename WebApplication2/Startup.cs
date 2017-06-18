@@ -68,6 +68,8 @@ namespace WebApplication2
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddSingleton<IAuthorizationHandler, EntityTypeHandler>();
+
+            services.AddScoped<IUserEntityLoader, UserEntityServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
