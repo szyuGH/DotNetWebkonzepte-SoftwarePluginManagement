@@ -20,5 +20,11 @@ namespace WebApplication2.Models
 
         public ICollection<LicenseKey> LicenseKeys { get; set; }
         public ICollection<Plugin> Plugins { get; set; }
+
+        public bool CanEdit(IUserEntity entity)
+        {
+            return (entity is EditorUser && (entity as EditorUser).Company == Company)
+                || (entity is CompanyUser && Company == entity);
+        }
     }
 }

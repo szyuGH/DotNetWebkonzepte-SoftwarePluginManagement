@@ -7,9 +7,9 @@
 
 <h2>Create</h2>
 
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
     <div class="form-horizontal">
-        <h4>Plugin</h4>
+        <h4>Plugin for <a asp-action="Details" asp-controller="Softwares" asp-route-id="@((ViewData["Software"] as Software).Id)">@((ViewData["Software"] as Software).Name)</a></h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -26,6 +26,14 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
         </div>
+
+        <div class="form-group">
+            <label asp-for="Data" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Data" type="file" name="files" />
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

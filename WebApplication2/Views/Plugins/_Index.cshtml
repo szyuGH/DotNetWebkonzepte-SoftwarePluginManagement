@@ -1,4 +1,4 @@
-@model IEnumerable<WebApplication2.Models.Software>
+@model IEnumerable<WebApplication2.Models.Plugin>
 
 @using WebApplication2.Services
 @using WebApplication2.Models.UserEntities
@@ -7,12 +7,15 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RelatedSoftware)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Company)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -23,7 +26,10 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                <a asp-action="Details" asp-route-id="@item.RelatedSoftware.Id" asp-controller="Softwares">@(item.RelatedSoftware.Name)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company)
             </td>
             <td>
                 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor && item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))

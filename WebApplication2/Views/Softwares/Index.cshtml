@@ -1,10 +1,10 @@
-@model IEnumerable<WebApplication2.Models.LicenseKey>
+@model IEnumerable<WebApplication2.Models.Software>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Browse</h2>
 
-@await Html.PartialAsync("_Index");
+@await Html.PartialAsync("_Index")

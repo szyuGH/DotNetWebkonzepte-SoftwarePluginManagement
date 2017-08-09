@@ -13,6 +13,7 @@ using WebApplication2.Models.UserEntities;
 
 namespace WebApplication2.Controllers
 {
+    [Authorize]
     public class SoftwaresController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,9 +34,21 @@ namespace WebApplication2.Controllers
         // GET: OwnSoftwares
         public async Task<IActionResult> Own()
         {
-            CompanyUser company = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User)) as CompanyUser;
-            if (company == null)
-                return NotFound();
+            IUserEntity entity = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User));
+            if (entity is NormalUser)
+                Forbid();
+
+            CompanyUser company = null;
+            if (entity is CompanyUser)
+            {
+                company = entity as CompanyUser;
+                if (company == null)
+                    return NotFound();
+            } else if (entity is EditorUser)
+            {
+                await _context.CompanyUser.ToListAsync();
+                company = (entity as EditorUser).Company;
+            }
             List<Software> ownSoftware = await _context.Software.Where(s => s.Company == company).ToListAsync();
             return View(ownSoftware);
         }
@@ -49,9 +62,11 @@ namespace WebApplication2.Controllers
                 return NotFound();
             }
 
-            var software = await _context.Software.Include(s => s.LicenseKeys)
+            var software = await _context.Software
+                .Include(s => s.LicenseKeys).ThenInclude(lk => lk.User)
+                .Include(s => s.Plugins).ThenInclude(p => p.Company)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            await _context.LicenseKey.Include(l => l.User).ToListAsync(); // to load the users from the context
+            //await _context.LicenseKey.Include(l => l.User).ToListAsync(); // to load the users from the context
             if (software == null)
             {
                 return NotFound();
@@ -81,6 +96,13 @@ namespace WebApplication2.Controllers
             }
             return View(software);
         }
+
+
+        public IActionResult CreatePlugin(string id)
+        {
+            return RedirectToAction("Create", "Plugins", new { softwareId = id});
+        }
+        
 
         // GET: Softwares/Edit/5
         public async Task<IActionResult> Edit(string id)

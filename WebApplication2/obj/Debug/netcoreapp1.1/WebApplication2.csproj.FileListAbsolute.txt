@@ -3,8 +3,8 @@ C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplicati
 C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\bin\Debug\netcoreapp1.1\WebApplication2.runtimeconfig.dev.json
 C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\bin\Debug\netcoreapp1.1\WebApplication2.dll
 C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\bin\Debug\netcoreapp1.1\WebApplication2.pdb
-C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
 C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\netcoreapp1.1\WebApplication2.AssemblyInfo.cs
 C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\netcoreapp1.1\WebApplication2.dll
 C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\netcoreapp1.1\WebApplication2.pdb
 C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\netcoreapp1.1\WebApplication2.csprojResolveAssemblyReference.cache
+C:\Users\Szyu\documents\visual studio 2017\Projects\WebApplication2\WebApplication2\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs

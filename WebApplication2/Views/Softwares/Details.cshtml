@@ -33,14 +33,29 @@
         </dd>
     </dl>
 </div>
+<div>
+    <br />
+    <br />
+    <h4>Available Plugins</h4>
+    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+    {
+        <p>
+            <a asp-action="CreatePlugin" asp-route-id="@Model.Id"><i class="fa fa-plus-circle"></i> Create New</a>
+        </p>
+    }
+    <hr />
+    @await Html.PartialAsync("_SoftwarePlugins", Model.Plugins)
+</div>
 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Company)
 {
-    @await Html.PartialAsync("_LicenseKeys", Model.LicenseKeys);
+    <div>
+        @await Html.PartialAsync("_LicenseKeys", Model.LicenseKeys)
+    </div>
 }
 <div>
 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
 {
-    <a asp-action="Edit" asp-route-id="Model.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
+    <a asp-action="Edit" asp-route-id="@Model.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
 }
 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
 {
