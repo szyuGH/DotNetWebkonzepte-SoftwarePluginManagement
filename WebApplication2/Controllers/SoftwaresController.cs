@@ -39,6 +39,7 @@ namespace WebApplication2.Controllers
             List<Software> ownSoftware = await _context.Software.Where(s => s.Company == company).ToListAsync();
             return View(ownSoftware);
         }
+        
 
         // GET: Softwares/Details/5
         public async Task<IActionResult> Details(string id)
@@ -48,8 +49,9 @@ namespace WebApplication2.Controllers
                 return NotFound();
             }
 
-            var software = await _context.Software
+            var software = await _context.Software.Include(s => s.LicenseKeys)
                 .SingleOrDefaultAsync(m => m.Id == id);
+            await _context.LicenseKey.Include(l => l.User).ToListAsync(); // to load the users from the context
             if (software == null)
             {
                 return NotFound();

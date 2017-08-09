@@ -24,6 +24,7 @@ namespace WebApplication2.Controllers
         {
             return View(await _context.Plugin.ToListAsync());
         }
+        
 
         // GET: Plugins/Details/5
         public async Task<IActionResult> Details(string id)
@@ -144,6 +145,9 @@ namespace WebApplication2.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+
+
 
         private bool PluginExists(string id)
         {

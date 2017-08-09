@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace WebApplication2.Services
         Task<ApplicationUser> GetCurrentApplicationUser(ClaimsPrincipal user);
         Task<IUserEntity> GetCurrentUserEntity(ClaimsPrincipal user);
         Task<UserEntityType> GetCurrentUserEntityType(ClaimsPrincipal user);
+        Task<ApplicationUser> GetApplicationUserByUserEntity(IUserEntity entity);
     }
 
     public class UserEntityServices : IUserEntityLoader
@@ -68,6 +70,11 @@ namespace WebApplication2.Services
 
             UserEntityType type = appUser.EntityType;
             return type;
+        }
+
+        public async Task<ApplicationUser> GetApplicationUserByUserEntity(IUserEntity entity)
+        {
+            return await _context.Users.Where(u => u.EntityId == entity.Id).SingleOrDefaultAsync();
         }
     }
 }

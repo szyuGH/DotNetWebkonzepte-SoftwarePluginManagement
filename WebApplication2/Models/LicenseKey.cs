@@ -13,6 +13,7 @@ namespace WebApplication2.Models
         public string Id { get; set; }
         public Software Software { get; set; }
         public NormalUser User { get; set; }
+        [DisplayFormat(DataFormatString = "{0,-10}")]
         public string Key { get; set; }
     }
 }

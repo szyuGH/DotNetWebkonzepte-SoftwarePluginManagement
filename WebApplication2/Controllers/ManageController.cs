@@ -10,6 +10,9 @@ using Microsoft.Extensions.Options;
 using WebApplication2.Models;
 using WebApplication2.Models.ManageViewModels;
 using WebApplication2.Services;
+using WebApplication2.Models.UserEntities;
+using Microsoft.EntityFrameworkCore;
+using WebApplication2.Data;
 
 namespace WebApplication2.Controllers
 {
@@ -22,6 +25,8 @@ namespace WebApplication2.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly IUserEntityLoader _userEntityServices;
+        private readonly ApplicationDbContext _context;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -29,7 +34,9 @@ namespace WebApplication2.Controllers
           IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
           ISmsSender smsSender,
-          ILoggerFactory loggerFactory)
+          ILoggerFactory loggerFactory,
+          IUserEntityLoader userEntityServices,
+          ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -37,6 +44,8 @@ namespace WebApplication2.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _userEntityServices = userEntityServices;
+            _context = context;
         }
 
         //
@@ -51,6 +60,7 @@ namespace WebApplication2.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.Saved ? "Your changes have been saved."
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -58,6 +68,12 @@ namespace WebApplication2.Controllers
             {
                 return View("Error");
             }
+            UserEntityType entityType = await _userEntityServices.GetCurrentUserEntityType(User);
+            if (entityType == UserEntityType.Editor)
+            {
+                return View("Error");
+            }
+
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
@@ -341,6 +357,91 @@ namespace WebApplication2.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
+
+        // POST: Manage/EditCompany/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCompany(string id, [Bind("Id,Name,Introduction,City,Postcode,Street")] CompanyUser user)
+        {
+            if (id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Saved });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CompanyUserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
+        private bool CompanyUserExists(string id)
+        {
+            return _context.CompanyUser.Any(e => e.Id == id);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditNormalUser(string id, [Bind("Id,FirstName,LastName")] NormalUser user)
+        {
+            if (id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Saved });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!NormalUserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
+        private bool NormalUserExists(string id)
+        {
+            return _context.NormalUser.Any(e => e.Id == id);
+        }
+
+
+
+
+
+
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
@@ -360,7 +461,8 @@ namespace WebApplication2.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            Saved
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync()

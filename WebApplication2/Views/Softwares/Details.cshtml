@@ -1,5 +1,13 @@
 @model WebApplication2.Models.Software
 
+@using Microsoft.AspNetCore.Identity
+@using WebApplication2.Models
+@using WebApplication2.Models.UserEntities
+@using WebApplication2.Services
+@inject IUserEntityLoader UserEntityServices
+
+
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -25,7 +33,22 @@
         </dd>
     </dl>
 </div>
+@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Company)
+{
+    @await Html.PartialAsync("_LicenseKeys", Model.LicenseKeys);
+}
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+{
+    <a asp-action="Edit" asp-route-id="Model.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
+}
+@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+{
+    <a asp-action="Own"><i class="fa fa-arrow-circle-o-left"></i> Back to List</a>
+}
+else
+{
+    <a asp-action="Index"><i class="fa fa-arrow-circle-o-left"></i> Back to List</a>
+}
+
 </div>

@@ -19,5 +19,6 @@ namespace WebApplication2.Models
         public CompanyUser Company { get; set; }
 
         public ICollection<LicenseKey> LicenseKeys { get; set; }
+        public ICollection<Plugin> Plugins { get; set; }
     }
 }

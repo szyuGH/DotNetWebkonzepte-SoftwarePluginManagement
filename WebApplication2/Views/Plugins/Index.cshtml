@@ -1,15 +1,20 @@
 @model IEnumerable<WebApplication2.Models.Plugin>
-
+@using WebApplication2.Services
+@using WebApplication2.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Plugins</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+{
+    <p>
+        <a asp-action="Create"><i class="fa fa-plus-circle"></i> Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -32,9 +37,16 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a> <text>|</text>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
+                }
+                else if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.Company)
+                {
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a>
+                }
             </td>
         </tr>
 }

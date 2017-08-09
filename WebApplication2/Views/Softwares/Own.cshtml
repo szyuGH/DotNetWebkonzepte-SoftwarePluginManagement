@@ -1,13 +1,14 @@
 @model IEnumerable<WebApplication2.Models.Software>
+@using WebApplication2.Services
+@using WebApplication2.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
 
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<h2>Our Softwares</h2>
 
-<h2>Index</h2>
-
+@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+{
 <p>
     <a asp-action="Create"><i class="fa fa-plus-circle"></i> Create New</a>
 </p>
-@await Html.PartialAsync("_Index");
+}
+@await Html.PartialAsync("_Index")

@@ -14,6 +14,7 @@ using WebApplication2.Models.AccountViewModels;
 using WebApplication2.Services;
 using WebApplication2.Models.UserEntities;
 using WebApplication2.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication2.Controllers
 {
@@ -27,6 +28,7 @@ namespace WebApplication2.Controllers
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
         private readonly ApplicationDbContext _context;
+        private readonly IUserEntityLoader _userEntityServices;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -35,7 +37,8 @@ namespace WebApplication2.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            IUserEntityLoader userEntityServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,6 +47,7 @@ namespace WebApplication2.Controllers
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _context = context;
+            _userEntityServices = userEntityServices;
         }
 
         //

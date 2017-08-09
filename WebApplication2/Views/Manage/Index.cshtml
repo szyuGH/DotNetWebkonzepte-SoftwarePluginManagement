@@ -1,4 +1,7 @@
 ﻿@model IndexViewModel
+@using WebApplication2.Services
+@using WebApplication2.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
 @{
     ViewData["Title"] = "Manage your account";
 }
@@ -9,7 +12,12 @@
 <div>
     <h4>Change your account settings</h4>
     <hr />
+    @await Html.PartialAsync(string.Format("ManageEntities/{0}", (await UserEntityServices.GetCurrentUserEntityType(User))), await UserEntityServices.GetCurrentUserEntity(User));
+    <hr />
     <dl class="dl-horizontal">
+        <dt>Username:</dt>
+        <dd>@(User.Identity.Name)</dd>
+        <br/>
         <dt>Password:</dt>
         <dd>
             @if (Model.HasPassword)
@@ -26,8 +34,5 @@
 
             @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Manage</a>
         </dd>
-        
-
-       
     </dl>
 </div>

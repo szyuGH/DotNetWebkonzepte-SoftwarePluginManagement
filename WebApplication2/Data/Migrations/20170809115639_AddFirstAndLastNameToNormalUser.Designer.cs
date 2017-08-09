@@ -9,9 +9,10 @@ using WebApplication2.Models.UserEntities;
 namespace WebApplication2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170809115639_AddFirstAndLastNameToNormalUser")]
+    partial class AddFirstAndLastNameToNormalUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -213,8 +214,7 @@ namespace WebApplication2.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("RelatedSoftwareId")
-                        .IsRequired();
+                    b.Property<string>("RelatedSoftwareId");
 
                     b.HasKey("Id");
 
@@ -252,8 +252,6 @@ namespace WebApplication2.Data.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<string>("Introduction");
-
                     b.Property<string>("Name");
 
                     b.Property<string>("Postcode");
@@ -270,8 +268,7 @@ namespace WebApplication2.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CompanyId")
-                        .IsRequired();
+                    b.Property<string>("CompanyId");
 
                     b.Property<string>("FirstName");
 
@@ -288,10 +285,6 @@ namespace WebApplication2.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
 
                     b.HasKey("Id");
 
@@ -369,28 +362,26 @@ namespace WebApplication2.Data.Migrations
             modelBuilder.Entity("WebApplication2.Models.Plugin", b =>
                 {
                     b.HasOne("WebApplication2.Models.UserEntities.CompanyUser", "Company")
-                        .WithMany("Plugins")
+                        .WithMany()
                         .HasForeignKey("CompanyId");
 
                     b.HasOne("WebApplication2.Models.Software", "RelatedSoftware")
-                        .WithMany("Plugins")
-                        .HasForeignKey("RelatedSoftwareId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("RelatedSoftwareId");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Software", b =>
                 {
                     b.HasOne("WebApplication2.Models.UserEntities.CompanyUser", "Company")
-                        .WithMany("Softwares")
+                        .WithMany()
                         .HasForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.UserEntities.EditorUser", b =>
                 {
                     b.HasOne("WebApplication2.Models.UserEntities.CompanyUser", "Company")
-                        .WithMany("Editors")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.UsersPlugins", b =>

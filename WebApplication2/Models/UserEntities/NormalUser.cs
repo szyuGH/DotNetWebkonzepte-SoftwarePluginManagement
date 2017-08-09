@@ -8,7 +8,15 @@ namespace WebApplication2.Models.UserEntities
 {
     public class NormalUser : IUserEntity
     {
-        [Key]
-        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public ICollection<LicenseKey> LicenseKeys { get; set; }
+
+
+        public string GetFullName()
+        {
+            return string.Format("{0}, {1}", LastName, FirstName);
+        }
     }
 }

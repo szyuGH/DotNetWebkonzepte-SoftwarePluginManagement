@@ -1,4 +1,4 @@
-@model IEnumerable<WebApplication2.Models.LicenseKey>
+@model IEnumerable<WebApplication2.Models.Software>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,4 +7,7 @@
 
 <h2>Index</h2>
 
+<p>
+    <a asp-action="Create"><i class="fa fa-plus-circle"></i> Create New</a>
+</p>
 @await Html.PartialAsync("_Index");

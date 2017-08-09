@@ -22,8 +22,29 @@ namespace WebApplication2.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-
             
+
+            builder.Entity<LicenseKey>()
+                .HasOne(l => l.Software)
+                .WithMany(s => s.LicenseKeys)
+                .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Cascade)
+                .IsRequired();
+            builder.Entity<LicenseKey>()
+                .HasOne(l => l.User)
+                .WithMany(u => u.LicenseKeys)
+                .IsRequired();
+
+            builder.Entity<EditorUser>()
+                .HasOne(e => e.Company)
+                .WithMany(c => c.Editors)
+                .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Cascade)
+                .IsRequired();
+            
+            builder.Entity<Plugin>()
+                .HasOne(s => s.RelatedSoftware)
+                .WithMany(c => c.Plugins)
+                .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Cascade)
+                .IsRequired();
         }
 
         public DbSet<NormalUser> NormalUser { get; set; }
