@@ -13,7 +13,29 @@ namespace WebApplication2.Models
         public string Id { get; set; }
         public Software Software { get; set; }
         public NormalUser User { get; set; }
-        [DisplayFormat(DataFormatString = "{0,-10}")]
+        [Required]
         public string Key { get; set; }
+
+        public string GetShortKey(int length)
+        {
+            if (Key.Length > length)
+            {
+                return Key.Substring(0, length) + "...";
+            } else
+            {
+                return Key;
+            }
+        }
+
+        public string GetFullUsername()
+        {
+            if (User == null)
+            {
+                return "No assigned User";
+            } else
+            {
+                return User.GetFullName();
+            }
+        }
     }
 }

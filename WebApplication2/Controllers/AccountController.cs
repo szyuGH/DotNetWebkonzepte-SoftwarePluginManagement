@@ -29,6 +29,7 @@ namespace WebApplication2.Controllers
         private readonly string _externalCookieScheme;
         private readonly ApplicationDbContext _context;
         private readonly IUserEntityLoader _userEntityServices;
+        
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -79,6 +80,7 @@ namespace WebApplication2.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
+
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -122,7 +124,7 @@ namespace WebApplication2.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                NormalUser normalUser = new NormalUser { };
+                NormalUser normalUser = new NormalUser { FirstName = model.FirstName, LastName = model.LastName };
                 _context.Add<NormalUser>(normalUser);
                 await _context.SaveChangesAsync();
 

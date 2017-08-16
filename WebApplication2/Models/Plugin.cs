@@ -21,7 +21,7 @@ namespace WebApplication2.Models
 
         public CompanyUser Company { get; set; }
         public Software RelatedSoftware { get; set; }
-        
+
 
         public bool CanEdit(IUserEntity entity)
         {

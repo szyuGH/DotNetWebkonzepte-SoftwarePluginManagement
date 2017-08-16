@@ -7,9 +7,9 @@
 
 <h2>Create</h2>
 
-<form asp-action="Create">
+<form asp-action="AddUserKey">
     <div class="form-horizontal">
-        <h4>License Key</h4>
+        <h4>Enter License Key</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -21,14 +21,14 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add Key" class="btn btn-default" />
             </div>
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-action="Index">Back to Software</a>
+    <a asp-action="NormalUserIndex">Back to List</a>
 </div>
 
 @section Scripts {

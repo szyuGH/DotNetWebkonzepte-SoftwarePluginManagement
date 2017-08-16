@@ -3,19 +3,16 @@
 @using WebApplication2.Models.UserEntities
 @inject IUserEntityLoader UserEntityServices
 
-<br />
-<br />
-<h4>License Keys</h4>
-<hr />
+
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.User)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Key)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Key)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -25,17 +22,19 @@
     @foreach (var item in Model) {
             <tr>
                 <td>
-                    @*@Html.DisplayFor(modelItem => item.User.Id)*@
-                    @((item.User as NormalUser).GetFullName())
-                </td>
-                <td>
                     @*@Html.DisplayFor(modelItem => item.Key)*@
-                    @(item.Key.Substring(0, 24) + "...")
+                    @(item.GetShortKey(36))
                 </td>
                 <td>
-                    <a asp-controller="LicenseKeys" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a>
-@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor){
-                    <text>|</text><a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
+                    @*@Html.DisplayFor(modelItem => item.User.Id)*@
+                    @(item.GetFullUsername())
+                </td>
+                <td>
+                    <a asp-controller="LicenseKeys" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i>Details</a>
+@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+{
+                    <text>| </text><a asp-controller="LicenseKeys" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i>Edit</a>
+                    <text>| </text><a asp-controller="LicenseKeys" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i>Delete</a>
 }
                 </td>
             </tr>

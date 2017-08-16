@@ -28,7 +28,7 @@ namespace WebApplication2.Controllers
         // GET: Softwares
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Software.ToListAsync());
+            return View(await _context.Software.Include(s => s.Company).Include(s => s.Plugins).ToListAsync());
         }
 
         // GET: OwnSoftwares
@@ -36,7 +36,7 @@ namespace WebApplication2.Controllers
         {
             IUserEntity entity = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User));
             if (entity is NormalUser)
-                Forbid();
+                return Forbid();
 
             CompanyUser company = null;
             if (entity is CompanyUser)
@@ -49,7 +49,7 @@ namespace WebApplication2.Controllers
                 await _context.CompanyUser.ToListAsync();
                 company = (entity as EditorUser).Company;
             }
-            List<Software> ownSoftware = await _context.Software.Where(s => s.Company == company).ToListAsync();
+            List<Software> ownSoftware = await _context.Software.Include(s => s.Company).Include(s => s.Plugins).Where(s => s.Company == company).ToListAsync();
             return View(ownSoftware);
         }
         
@@ -63,10 +63,12 @@ namespace WebApplication2.Controllers
             }
 
             var software = await _context.Software
-                .Include(s => s.LicenseKeys).ThenInclude(lk => lk.User)
+                .Include(s => s.LicenseKeys).ThenInclude(lk => lk.Software)
+                .Include(s => s.LicenseKeys).ThenInclude(l => l.User)
                 .Include(s => s.Plugins).ThenInclude(p => p.Company)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            //await _context.LicenseKey.Include(l => l.User).ToListAsync(); // to load the users from the context
+            //await _context.NormalUser.LoadAsync();
+
             if (software == null)
             {
                 return NotFound();
@@ -76,8 +78,11 @@ namespace WebApplication2.Controllers
         }
 
         // GET: Softwares/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            IUserEntity entity = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User));
+            if (entity is NormalUser)
+                 return Forbid();
             return View();
         }
 
@@ -90,9 +95,21 @@ namespace WebApplication2.Controllers
         {
             if (ModelState.IsValid)
             {
+                IUserEntity entity = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User));
+                if (entity is NormalUser)
+                    return Forbid();
+                else if (entity is CompanyUser)
+                    software.Company = entity as CompanyUser;
+                else if (entity is EditorUser)
+                {
+                    _context.EditorUser.Include(e => e.Company).Load();
+                    software.Company = (entity as EditorUser).Company;
+                }
+
+                
                 _context.Add(software);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Own");
             }
             return View(software);
         }
@@ -102,7 +119,12 @@ namespace WebApplication2.Controllers
         {
             return RedirectToAction("Create", "Plugins", new { softwareId = id});
         }
-        
+
+        public IActionResult CreateLicenseKey(string id)
+        {
+            return RedirectToAction("Create", "LicenseKeys", new { softwareId = id });
+        }
+
 
         // GET: Softwares/Edit/5
         public async Task<IActionResult> Edit(string id)

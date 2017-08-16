@@ -29,16 +29,16 @@
                 <a asp-action="Details" asp-route-id="@item.RelatedSoftware.Id" asp-controller="Softwares">@(item.RelatedSoftware.Name)</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Company)
+                @Html.DisplayFor(modelItem => item.Company.Name)
             </td>
             <td>
-                @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor && item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
+                @if (item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
                 {
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
                     <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a> <text>|</text>
                     <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
                 }
-                else if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.Company)
+                else
                 {
                     <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a>
                 }

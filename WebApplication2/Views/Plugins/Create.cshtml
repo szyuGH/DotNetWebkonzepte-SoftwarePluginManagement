@@ -12,6 +12,7 @@
         <h4>Plugin for <a asp-action="Details" asp-controller="Softwares" asp-route-id="@((ViewData["Software"] as Software).Id)">@((ViewData["Software"] as Software).Name)</a></h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @Html.ValidationMessage("data")
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">

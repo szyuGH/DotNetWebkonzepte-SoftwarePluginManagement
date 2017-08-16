@@ -1,5 +1,9 @@
 @model WebApplication2.Models.Plugin
-
+@using Microsoft.AspNetCore.Identity
+@using WebApplication2.Models
+@using WebApplication2.Models.UserEntities
+@using WebApplication2.Services
+@inject IUserEntityLoader UserEntityServices
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -26,6 +30,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+@if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <text>| </text>
+}
     <a asp-action="Index">Back to List</a>
 </div>

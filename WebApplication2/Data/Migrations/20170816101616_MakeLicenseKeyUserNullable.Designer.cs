@@ -9,9 +9,10 @@ using WebApplication2.Models.UserEntities;
 namespace WebApplication2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170816101616_MakeLicenseKeyUserNullable")]
+    partial class MakeLicenseKeyUserNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -189,8 +190,7 @@ namespace WebApplication2.Data.Migrations
                     b.Property<string>("SoftwareId")
                         .IsRequired();
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 

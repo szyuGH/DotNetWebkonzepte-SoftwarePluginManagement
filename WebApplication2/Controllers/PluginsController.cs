@@ -29,7 +29,7 @@ namespace WebApplication2.Controllers
         // GET: Plugins
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Plugin.ToListAsync());
+            return View(await _context.Plugin.Include(p => p.RelatedSoftware).Include(p => p.Company).ToListAsync());
         }
 
         // GET: OwnPlugins
@@ -37,7 +37,7 @@ namespace WebApplication2.Controllers
         {
             IUserEntity entity = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User));
             if (entity is NormalUser)
-                Forbid();
+                return Forbid();
 
             CompanyUser company = null;
             if (entity is CompanyUser)
@@ -51,7 +51,7 @@ namespace WebApplication2.Controllers
                 await _context.CompanyUser.ToListAsync();
                 company = (entity as EditorUser).Company;
             }
-            List<Plugin> ownPlugins = await _context.Plugin.Where(p => p.Company == company).ToListAsync();
+            List<Plugin> ownPlugins = await _context.Plugin.Include(p => p.RelatedSoftware).Include(p => p.Company).Where(p => p.Company == company).ToListAsync();
             return View(ownPlugins);
         }
 
@@ -60,10 +60,10 @@ namespace WebApplication2.Controllers
         {
             IUserEntity entity = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User));
             if (entity is NormalUser)
-                Forbid();
+                return Forbid();
 
             CompanyUser company = await GetCompanyUser();
-            List<Plugin> plugins = await _context.Plugin.Where(p => p.Company != company && p.RelatedSoftware.Company == company).ToListAsync();
+            List<Plugin> plugins = await _context.Plugin.Include(p => p.RelatedSoftware).Include(p => p.Company).Where(p => p.Company != company && p.RelatedSoftware.Company == company).ToListAsync();
             return View(plugins);
         }
 
@@ -71,7 +71,7 @@ namespace WebApplication2.Controllers
         {
             IUserEntity entity = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User));
             if (entity is NormalUser)
-                Forbid();
+                return null;
 
             CompanyUser company = null;
             if (entity is CompanyUser)
@@ -123,11 +123,11 @@ namespace WebApplication2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Plugin plugin, ICollection<IFormFile> files)
         {
-            if (ModelState.IsValid && files.Count == 1)
+            string sid = HttpContext.Session.GetString("SoftwareId");
+            if (ModelState.IsValid && files != null && files.Count == 1)
             { 
 
                 plugin.Company = await GetCompanyUser();
-                string sid = HttpContext.Session.GetString("SoftwareId");
                 plugin.RelatedSoftware = (await _context.Software.Where(s => s.Id == sid).SingleOrDefaultAsync());
 
                 var file = files.First();
@@ -143,9 +143,15 @@ namespace WebApplication2.Controllers
 
                     _context.Add(plugin);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", "Softwares", sid);
+                    return RedirectToAction("Details", "Softwares", new { id = sid });
                 }
             }
+
+            Software software = await _context.Software.Where(s => s.Id == sid).SingleOrDefaultAsync();
+            HttpContext.Session.SetString("SoftwareId", software.Id);
+            ViewData["Software"] = software;
+            if (files == null || files.Count == 0)
+                ModelState.AddModelError("data", "You need to select a plugin file.");
             return View(plugin);
         }
 
@@ -172,7 +178,7 @@ namespace WebApplication2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Description")] Plugin plugin)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Description")] Plugin plugin, ICollection<IFormFile> files)
         {
             if (id != plugin.Id)
             {
@@ -183,6 +189,27 @@ namespace WebApplication2.Controllers
             {
                 try
                 {
+                    if (files != null && files.Count == 1)
+                    {
+                        var file = files.First();
+                        if (file.Length > 0)
+                        {
+                            var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                            using (var reader = new StreamReader(file.OpenReadStream()))
+                            {
+                                string contentAsString = reader.ReadToEnd();
+                                plugin.Data = new byte[contentAsString.Length * sizeof(char)];
+                                System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, plugin.Data, 0, plugin.Data.Length);
+                            }
+                        }
+                    } else
+                    {
+                        plugin = await _context.Plugin
+                            .Include(p => p.RelatedSoftware)
+                            .Include(p => p.Company)
+                            .SingleOrDefaultAsync(p => p.Id == plugin.Id);
+                    }
+
                     _context.Update(plugin);
                     await _context.SaveChangesAsync();
                 }

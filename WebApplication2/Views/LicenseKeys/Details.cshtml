@@ -25,7 +25,7 @@
             @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd>
-            @((Model.User as NormalUser).GetFullName())
+            @(Model.GetFullUsername())
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Key)

@@ -52,11 +52,19 @@ namespace WebApplication2.Services
             switch (type)
             {
                 case UserEntityType.NormalUser:
-                    return _context.NormalUser.SingleOrDefault(e => e.Id == appUser.EntityId);
+                    return _context.NormalUser
+                        .Include(n => n.LicenseKeys)
+                        .SingleOrDefault(e => e.Id == appUser.EntityId);
                 case UserEntityType.Company:
-                    return _context.CompanyUser.SingleOrDefault(e => e.Id == appUser.EntityId);
+                    return _context.CompanyUser
+                        .Include(c => c.Editors)
+                        .Include(c => c.Plugins)
+                        .Include(c => c.Softwares)
+                        .SingleOrDefault(e => e.Id == appUser.EntityId);
                 case UserEntityType.Editor:
-                    return _context.EditorUser.SingleOrDefault(e => e.Id == appUser.EntityId);
+                    return _context.EditorUser
+                        .Include(e => e.Company)
+                        .SingleOrDefault(e => e.Id == appUser.EntityId);
             }
             return null;
 

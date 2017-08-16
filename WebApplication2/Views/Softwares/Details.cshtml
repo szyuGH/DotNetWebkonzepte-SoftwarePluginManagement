@@ -46,24 +46,22 @@
     <hr />
     @await Html.PartialAsync("_SoftwarePlugins", Model.Plugins)
 </div>
-@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Company)
+@if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
 {
-    <div>
-        @await Html.PartialAsync("_LicenseKeys", Model.LicenseKeys)
-    </div>
+    <br />
+    <br />
+    <h4>License Keys</h4>
+    <p>
+        <a asp-action="CreateLicenseKey" asp-route-id="@Model.Id"><i class="fa fa-plus-circle"></i> Create New</a>
+    </p>
+    @await Html.PartialAsync("_LicenseKeys", Model.LicenseKeys)
 }
 <div>
-@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+@if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
 {
     <a asp-action="Edit" asp-route-id="@Model.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
 }
-@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
-{
-    <a asp-action="Own"><i class="fa fa-arrow-circle-o-left"></i> Back to List</a>
-}
-else
-{
-    <a asp-action="Index"><i class="fa fa-arrow-circle-o-left"></i> Back to List</a>
-}
+<a asp-action="Index"><i class="fa fa-arrow-circle-o-left"></i> Back to List</a>
+
 
 </div>
