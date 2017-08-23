@@ -22,17 +22,17 @@
         <dd>
             @if (Model.HasPassword)
             {
-                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">Change</a>
+                <a asp-controller="Manage" asp-action="ChangePassword" class="btn btn-default fa">Change</a>
             }
             else
             {
-                <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">Create</a>
+                <a asp-controller="Manage" asp-action="SetPassword" class="btn btn-default fa">Create</a>
             }
         </dd>
         <dt>External Logins:</dt>
         <dd>
 
-            @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Manage</a>
+            @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn btn-default fa">Manage</a>
         </dd>
     </dl>
 </div>
