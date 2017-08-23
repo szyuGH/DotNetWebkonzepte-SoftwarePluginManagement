@@ -27,8 +27,28 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
+        <dd>
+            @if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser)
+            {
+                <div>
+                    @if (((await UserEntityServices.GetCurrentUserEntity(User)) as NormalUser).SubscribedPlugin(Model.Id))
+                    {
+                        <form asp-action="Unsubscribe" asp-route-id="@Model.Id" asp-route-returnview="Details" method="post">
+                            <button type="submit">Unsubscribe</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="Subscribe" asp-route-id="@Model.Id" asp-route-returnview="Details" method="post">
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    }
+                </div>
+            }
+        </dd>
     </dl>
 </div>
+
 <div>
 @if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
 {

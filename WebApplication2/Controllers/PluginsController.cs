@@ -88,6 +88,24 @@ namespace WebApplication2.Controllers
             return company;
         }
 
+        public async Task<IActionResult> UserPluginsIndex()
+        {
+            NormalUser user = (await _userEntityServices.GetCurrentUserEntity(HttpContext.User)) as NormalUser;
+            if (user == null)
+                return NotFound();
+
+            ICollection<UsersPlugins> userPlugins = await _context.UserPlugin
+                    .Include(p => p.Plugin)
+                        .ThenInclude(p => p.Company)
+                    .Include(p => p.Software)
+                    .Include(p => p.User)
+                    .Where(p => p.User == user)
+                    .ToListAsync();
+            List<Plugin> plugins = userPlugins.Select(p => p.Plugin).ToList();
+            
+            return View(plugins);
+        }
+
 
         // GET: Plugins/Details/5
         public async Task<IActionResult> Details(string id)
@@ -257,6 +275,118 @@ namespace WebApplication2.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+
+        //public IActionResult Subscribe()
+        //{
+        //    return View();
+        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Subscribe(string id, string returnview)
+        {
+            var plugin = await _context.Plugin.Include(p => p.RelatedSoftware).SingleOrDefaultAsync(m => m.Id == id);
+                try
+                {
+                    var entity = await _userEntityServices.GetCurrentUserEntity(HttpContext.User);
+                    if (!(entity is NormalUser))
+                        return Forbid();
+                    NormalUser user = entity as NormalUser;
+                    Software software = plugin.RelatedSoftware;
+
+                    UsersPlugins userPlugin = new UsersPlugins
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        User = user,
+                        Plugin = plugin,
+                        Software = software
+                    };
+                
+
+                _context.Add(userPlugin);
+                    //_context.Update(user);
+                    await _context.SaveChangesAsync();
+                //return RedirectToAction("NormalUserIndex");
+                user.Plugins.Add(userPlugin);
+            }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PluginExists(plugin.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            return RedirectToAction(returnview, new { id = id });
+        }
+
+
+        //public async Task<IActionResult> Unsubscribe(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var entity = await _userEntityServices.GetCurrentUserEntity(HttpContext.User);
+        //    if (!(entity is NormalUser))
+        //        return Forbid();
+        //    NormalUser user = entity as NormalUser;
+
+        //    var userPlugin = await _context.UserPlugin
+        //        .Include(up => up.User)
+        //        .Include(up => up.Plugin)
+        //        .SingleOrDefaultAsync(up => up.User == user && up.Plugin.Id == id);
+            
+        //    if (userPlugin == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(userPlugin);
+        //}
+
+        [HttpPost, ActionName("Unsubscribe")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Unsubscribe(string id, string returnview)
+        {
+            var entity = await _userEntityServices.GetCurrentUserEntity(HttpContext.User);
+            if (!(entity is NormalUser))
+                return Forbid();
+            NormalUser user = entity as NormalUser;
+
+            var userPlugin = await _context.UserPlugin
+                .Include(up => up.User)
+                .Include(up => up.Plugin)
+                .Include(up => up.Software)
+                .SingleOrDefaultAsync(up => up.User == user && up.Plugin.Id == id);
+
+            try
+            {
+                _context.Remove(userPlugin);
+                user.Plugins.Remove(userPlugin);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PluginExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            
+            return RedirectToAction(returnview, new { id = id });
+        }
+
+
+
 
 
 

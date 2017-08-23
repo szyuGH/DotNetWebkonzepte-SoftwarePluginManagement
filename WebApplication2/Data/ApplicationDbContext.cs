@@ -45,6 +45,15 @@ namespace WebApplication2.Data
                 .WithMany(c => c.Plugins)
                 .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Cascade)
                 .IsRequired();
+
+            builder.Entity<UsersPlugins>()
+                .HasOne(up => up.User)
+                .WithMany(nu => nu.Plugins)
+                .IsRequired();
+            builder.Entity<UsersPlugins>()
+                .HasOne(up => up.Plugin);
+            builder.Entity<UsersPlugins>()
+                .HasOne(up => up.Software);
         }
 
         public DbSet<NormalUser> NormalUser { get; set; }

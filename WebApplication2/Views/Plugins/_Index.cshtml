@@ -23,7 +23,11 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <a asp-action="Details" asp-route-id=@item.Id>@item.Name</a>
+                @if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser && (await UserEntityServices.GetCurrentUserEntity(User) as NormalUser).SubscribedPlugin(item.Id))
+                {
+                    <text><p style="color:#2a6f41;display:inline"> (Subscribed)</p></text>
+}
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.RelatedSoftware.Id" asp-controller="Softwares">@(item.RelatedSoftware.Name)</a>
@@ -35,14 +39,8 @@
                 @if (item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
                 {
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
-                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a> <text>|</text>
                     <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
                 }
-                else
-                {
-                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a>
-                }
-                
             </td>
         </tr>
 }

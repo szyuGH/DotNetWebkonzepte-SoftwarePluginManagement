@@ -1,0 +1,7 @@
+@model IEnumerable<WebApplication2.Models.Plugin>
+@using WebApplication2.Services
+@using WebApplication2.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
+
+<h2>Subscribed Plugins</h2>
+@await Html.PartialAsync("_Index")

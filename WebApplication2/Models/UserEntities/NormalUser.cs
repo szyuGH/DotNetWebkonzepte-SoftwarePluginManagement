@@ -12,11 +12,17 @@ namespace WebApplication2.Models.UserEntities
         public string LastName { get; set; }
 
         public ICollection<LicenseKey> LicenseKeys { get; set; }
+        public ICollection<UsersPlugins> Plugins { get; set; }
 
 
         public string GetFullName()
         {
             return string.Format("{0}, {1}", LastName, FirstName);
+        }
+
+        public bool SubscribedPlugin(string pluginId)
+        {
+            return Plugins.Any(p => p.User == this && p.Plugin.Id == pluginId);
         }
     }
 }

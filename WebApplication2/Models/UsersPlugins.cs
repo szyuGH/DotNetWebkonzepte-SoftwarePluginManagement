@@ -13,5 +13,6 @@ namespace WebApplication2.Models
         public string Id { get; set; }
         public NormalUser User { get; set; }
         public Plugin Plugin { get; set; }
+        public Software Software { get; set; }
     }
 }

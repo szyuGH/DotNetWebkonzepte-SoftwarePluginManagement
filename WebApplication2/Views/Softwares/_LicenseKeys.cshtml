@@ -22,18 +22,16 @@
     @foreach (var item in Model) {
             <tr>
                 <td>
-                    @*@Html.DisplayFor(modelItem => item.Key)*@
-                    @(item.GetShortKey(36))
+                    <a asp-controller="LicenseKeys" asp-action="Details" asp-route-id="@item.Id">@(item.GetShortKey(36))</a>
                 </td>
                 <td>
                     @*@Html.DisplayFor(modelItem => item.User.Id)*@
                     @(item.GetFullUsername())
                 </td>
                 <td>
-                    <a asp-controller="LicenseKeys" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i>Details</a>
 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
 {
-                    <text>| </text><a asp-controller="LicenseKeys" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i>Edit</a>
+                    <a asp-controller="LicenseKeys" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i>Edit</a>
                     <text>| </text><a asp-controller="LicenseKeys" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i>Delete</a>
 }
                 </td>

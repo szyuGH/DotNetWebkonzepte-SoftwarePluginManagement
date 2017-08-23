@@ -22,16 +22,15 @@
     @foreach (var item in Model) {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    <a asp-controller="Plugins" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Company.Name)
                 </td>
                 <td>
-                    <a asp-controller="Plugins" asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i>Details</a>
 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor && item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
 {
-                    <text>| </text><a asp-controller="Plugins" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Edit</a>
+                    <a asp-controller="Plugins" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Edit</a>
                     <text>| </text><a asp-controller="Plugins" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
 }
                 </td>

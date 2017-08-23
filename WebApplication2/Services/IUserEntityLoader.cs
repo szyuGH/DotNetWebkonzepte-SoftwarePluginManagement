@@ -54,6 +54,10 @@ namespace WebApplication2.Services
                 case UserEntityType.NormalUser:
                     return _context.NormalUser
                         .Include(n => n.LicenseKeys)
+                        .Include(n => n.Plugins)
+                            .ThenInclude(p => p.Plugin)
+                        .Include(n => n.Plugins)
+                            .ThenInclude(p => p.Software)
                         .SingleOrDefault(e => e.Id == appUser.EntityId);
                 case UserEntityType.Company:
                     return _context.CompanyUser

@@ -20,7 +20,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <a asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -29,12 +29,7 @@
                 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor && item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
                 {
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
-                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a> <text>|</text>
                     <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
-                }
-                else
-                {
-                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle"></i> Details</a>
                 }
                 
             </td>
