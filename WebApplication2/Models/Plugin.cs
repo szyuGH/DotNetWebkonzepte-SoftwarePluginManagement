@@ -20,6 +20,7 @@ namespace WebApplication2.Models
         public byte[] Data { get; set; }
 
         public CompanyUser Company { get; set; }
+        [Display(Name="Software")]
         public Software RelatedSoftware { get; set; }
 
 

@@ -22,37 +22,41 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.RelatedSoftware)
+        </dt>
+        <dd>
+            <a asp-action="Details" asp-controller="Softwares" asp-route-id="@Model.RelatedSoftware.Id">@Model.RelatedSoftware.Name</a>
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dd>
-            @if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser)
-            {
-                <div>
-                    @if (((await UserEntityServices.GetCurrentUserEntity(User)) as NormalUser).SubscribedPlugin(Model.Id))
-                    {
-                        <form asp-action="Unsubscribe" asp-route-id="@Model.Id" asp-route-returnview="Details" method="post">
-                            <button type="submit">Unsubscribe</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form asp-action="Subscribe" asp-route-id="@Model.Id" asp-route-returnview="Details" method="post">
-                            <button type="submit">Subscribe</button>
-                        </form>
-                    }
-                </div>
-            }
-        </dd>
     </dl>
 </div>
-
+<hr />
+<!-- Actions -->
 <div>
 @if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
 {
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <text>| </text>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info fa fa-pencil">&ensp;Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
 }
-    <a asp-action="Index">Back to List</a>
+else
+{
+    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser)
+    {
+        @if (((await UserEntityServices.GetCurrentUserEntity(User)) as NormalUser).SubscribedPlugin(Model.Id))
+        {
+            <a asp-action="Unsubscribe" asp-route-id="@Model.Id" asp-route-returnview="Details" class="btn btn-primary fa fa-times">&ensp;Unsubscribe</a>
+        }
+        else
+        {
+            <a asp-action="Subscribe" asp-route-id="@Model.Id" asp-route-returnview="Details"class="btn btn-primary fa fa-check">&ensp;Subscribe</a>
+        }
+
+    }
+}
+    <a href="javascript:history.go(-1)" class="btn btn-default fa fa-arrow-left">&ensp;Back</a>
 </div>
