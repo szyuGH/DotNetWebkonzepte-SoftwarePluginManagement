@@ -4,34 +4,25 @@
 @using WebApplication2.Models.UserEntities
 @inject IUserEntityLoader UserEntityServices
 
-<table class="table">
+<table class="table table-striped table-responsive table-hover">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr onclick="location.href = '@(Url.Action("Details", "Softwares", new { id = @item.Id}))'">
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor && item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
-                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
-                }
-                
             </td>
         </tr>
 }

@@ -8,7 +8,7 @@
 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
 {
 <p>
-    <a asp-action="Create"><i class="fa fa-plus-circle"></i> Create New</a>
+    <a asp-action="Create" class="btn btn-success fa fa-plus">&ensp;New</a>
 </p>
 }
 @await Html.PartialAsync("_Index")

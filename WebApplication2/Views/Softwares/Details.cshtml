@@ -33,35 +33,80 @@
         </dd>
     </dl>
 </div>
+<hr />
+<!-- Actions -->
 <div>
-    <br />
-    <br />
-    <h4>Available Plugins</h4>
-    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+    @if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
     {
-        <p>
-            <a asp-action="CreatePlugin" asp-route-id="@Model.Id"><i class="fa fa-plus-circle"></i> Create New</a>
-        </p>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info fa fa-pencil">&ensp;Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
     }
-    <hr />
-    @await Html.PartialAsync("_SoftwarePlugins", Model.Plugins)
+    <a href="javascript:history.go(-1)" class="btn btn-default fa fa-arrow-left">&ensp;Back</a>
 </div>
-@if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
-{
-    <br />
-    <br />
-    <h4>License Keys</h4>
-    <p>
-        <a asp-action="CreateLicenseKey" asp-route-id="@Model.Id"><i class="fa fa-plus-circle"></i> Create New</a>
-    </p>
-    @await Html.PartialAsync("_LicenseKeys", Model.LicenseKeys)
-}
-<div>
-@if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
-{
-    <a asp-action="Edit" asp-route-id="@Model.Id"><i class="fa fa-pencil"></i> Edit</a> <text>|</text>
-}
-<a asp-action="Index"><i class="fa fa-arrow-circle-o-left"></i> Back to List</a>
+<hr />
+<!-- Plugins -->
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#collapse1">Available Plugins</a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body" style="padding:0px;">
+                <table class="table table-responsive table-striped table-hover" style="margin:0px">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Plugins.First().Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Plugins.First().Company)
+                            </th>
+                            <th>
+                                <a asp-action="CreatePlugin" asp-route-id="@Model.Id" class="btn btn-success fa fa-plus">&ensp;New</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @await Html.PartialAsync("_SoftwarePlugins", Model.Plugins)
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- License Keys -->
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" href="#collapse2">License Keys</a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body" style="padding:0px">
+                <table class="table table-responsive table-striped table-hover" style="margin:0px">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LicenseKeys.First().Key)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LicenseKeys.First().User)
+                            </th>
+                            <th>
+                                <a asp-action="CreateLicenseKey" asp-route-id="@Model.Id" class="btn btn-success fa fa-plus">&ensp;New</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @await Html.PartialAsync("_LicenseKeys", Model.LicenseKeys)
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-</div>

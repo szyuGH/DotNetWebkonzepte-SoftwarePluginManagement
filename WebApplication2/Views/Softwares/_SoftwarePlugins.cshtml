@@ -4,38 +4,25 @@
 @inject IUserEntityLoader UserEntityServices
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@if (Model != null)
-{
-    @foreach (var item in Model) {
-            <tr>
+<tbody>
+    @if (Model != null)
+    {
+        @foreach (var item in Model)
+        {
+            <tr onclick="location.href = '@(Url.Action("Details", "Plugins", new { id = @item.Id}))'">
                 <td>
-                    <a asp-controller="Plugins" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                    @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Company.Name)
                 </td>
                 <td>
-@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor && item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
-{
-                    <a asp-controller="Plugins" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i> Edit</a>
-                    <text>| </text><a asp-controller="Plugins" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i> Delete</a>
-}
+                    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor && item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
+                    {
+                        <a asp-controller="Plugins" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
+                    }
                 </td>
             </tr>
+        }
     }
-}
-    </tbody>
-</table>
+</tbody>

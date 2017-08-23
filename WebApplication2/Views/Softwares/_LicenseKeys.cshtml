@@ -4,23 +4,13 @@
 @inject IUserEntityLoader UserEntityServices
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Key)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@if (Model != null)
-{
-    @foreach (var item in Model) {
-            <tr>
+
+<tbody>
+    @if (Model != null)
+    {
+        @foreach (var item in Model)
+        {
+            <tr onclick="location.href = '@(Url.Action("Details", "LicenseKeys", new { id = @item.Id}))'">
                 <td>
                     <a asp-controller="LicenseKeys" asp-action="Details" asp-route-id="@item.Id">@(item.GetShortKey(36))</a>
                 </td>
@@ -29,14 +19,12 @@
                     @(item.GetFullUsername())
                 </td>
                 <td>
-@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
-{
-                    <a asp-controller="LicenseKeys" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i>Edit</a>
-                    <text>| </text><a asp-controller="LicenseKeys" asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o"></i>Delete</a>
-}
+                    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+                    {
+                        <a asp-controller="LicenseKeys" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
+                    }
                 </td>
             </tr>
+        }
     }
-}
-    </tbody>
-</table>
+</tbody>
