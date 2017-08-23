@@ -1,0 +1,36 @@
+@model SPM.Models.LicenseKey
+
+@{
+    ViewData["Title"] = "Unsubscribe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to unsubscribe this?</h3>
+<div>
+    <h4>Software</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="Id" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Software)
+        </dt>
+        <dd>
+            @(Model.Software.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Key)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Key)
+        </dd>
+    </dl>
+    
+    <form asp-action="Unsubscribe">
+        <div class="form-actions no-color">
+            <button type="submit" class="btn btn-info fa fa-save">&ensp;Unsubscribe</button>
+            <a href="javascript:history.go(-1)" class="btn btn-default fa fa-arrow-left">&ensp;Back</a>
+        </div>
+    </form>
+</div>

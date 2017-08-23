@@ -1,0 +1,68 @@
+@model SPM.Models.Plugin
+@using Microsoft.AspNetCore.Identity
+@using SPM.Models
+@using SPM.Models.UserEntities
+@using SPM.Services
+@inject IUserEntityLoader UserEntityServices
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Plugin</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RelatedSoftware)
+        </dt>
+        <dd>
+            <a asp-action="Details" asp-controller="Softwares" asp-route-id="@Model.RelatedSoftware.Id">@Model.RelatedSoftware.Name</a>
+        </dd>
+        <dt>
+            Owner
+        </dt>
+        <dd>
+            @Model.Company.Name
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+</div>
+<hr />
+<!-- Actions -->
+<div>
+@if (Model.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info fa fa-pencil">&ensp;Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
+}
+else
+{
+    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser)
+    {
+        @if (((await UserEntityServices.GetCurrentUserEntity(User)) as NormalUser).SubscribedPlugin(Model.Id))
+        {
+            <a asp-action="Unsubscribe" asp-route-id="@Model.Id" asp-route-returnview="Details" class="btn btn-primary fa fa-times">&ensp;Unsubscribe</a>
+        }
+        else
+        {
+            <a asp-action="Subscribe" asp-route-id="@Model.Id" asp-route-returnview="Details"class="btn btn-primary fa fa-check">&ensp;Subscribe</a>
+        }
+
+    }
+}
+    <a href="javascript:history.go(-1)" class="btn btn-default fa fa-arrow-left">&ensp;Back</a>
+</div>

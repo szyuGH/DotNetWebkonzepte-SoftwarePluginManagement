@@ -1,0 +1,10 @@
+@model IEnumerable<SPM.Models.Software>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Browse</h2>
+
+@await Html.PartialAsync("_Index")

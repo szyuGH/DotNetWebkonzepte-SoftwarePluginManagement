@@ -1,0 +1,38 @@
+﻿@model IndexViewModel
+@using SPM.Services
+@using SPM.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
+@{
+    ViewData["Title"] = "Manage your account";
+}
+
+<h2>@ViewData["Title"].</h2>
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+<div>
+    <h4>Change your account settings</h4>
+    <hr />
+    @await Html.PartialAsync(string.Format("ManageEntities/{0}", (await UserEntityServices.GetCurrentUserEntityType(User))), await UserEntityServices.GetCurrentUserEntity(User));
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Username:</dt>
+        <dd>@(User.Identity.Name)</dd>
+        <br/>
+        <dt>Password:</dt>
+        <dd>
+            @if (Model.HasPassword)
+            {
+                <a asp-controller="Manage" asp-action="ChangePassword" class="btn btn-default fa">Change</a>
+            }
+            else
+            {
+                <a asp-controller="Manage" asp-action="SetPassword" class="btn btn-default fa">Create</a>
+            }
+        </dd>
+        <dt>External Logins:</dt>
+        <dd>
+
+            @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn btn-default fa">Manage</a>
+        </dd>
+    </dl>
+</div>

@@ -1,0 +1,10 @@
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\bin\Debug\netcoreapp1.1\SPM.deps.json
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\bin\Debug\netcoreapp1.1\SPM.runtimeconfig.json
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\bin\Debug\netcoreapp1.1\SPM.runtimeconfig.dev.json
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\bin\Debug\netcoreapp1.1\SPM.dll
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\bin\Debug\netcoreapp1.1\SPM.pdb
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\obj\Debug\netcoreapp1.1\SPM.AssemblyInfo.cs
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\obj\Debug\netcoreapp1.1\SPM.dll
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\obj\Debug\netcoreapp1.1\SPM.pdb
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\SPM\SPM\obj\Debug\netcoreapp1.1\SPM.csprojResolveAssemblyReference.cache

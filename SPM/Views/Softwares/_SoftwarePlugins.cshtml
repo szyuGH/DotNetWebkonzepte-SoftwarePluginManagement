@@ -1,0 +1,28 @@
+@model IEnumerable<SPM.Models.Plugin>
+@using SPM.Services
+@using SPM.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
+
+
+<tbody>
+    @if (Model != null)
+    {
+        @foreach (var item in Model)
+        {
+            <tr onclick="location.href = '@(Url.Action("Details", "Plugins", new { id = @item.Id}))'">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company.Name)
+                </td>
+                <td>
+                    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor && item.CanEdit((await UserEntityServices.GetCurrentUserEntity(User))))
+                    {
+                        <a asp-controller="Plugins" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    }
+</tbody>

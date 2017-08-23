@@ -1,0 +1,45 @@
+@model SPM.Models.LicenseKey
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>License Key</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Key" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="Key" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Key" class="text-danger"></span>
+            </div>
+        </div>
+        @if (Model.User != null)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.User)
+                </dt>
+                <dd>
+                    @(Model.GetFullUsername())
+                </dd>
+            </dl>
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-info fa fa-save">&ensp;Save</button>
+                <a href="javascript:history.go(-1)" class="btn btn-default fa fa-arrow-left">&ensp;Back</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

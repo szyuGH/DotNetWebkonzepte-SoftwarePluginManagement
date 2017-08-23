@@ -1,0 +1,23 @@
+﻿.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #e6f5ff;
+}
+tbody {
+    background-color: #ccebff;
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #dedede;
+}
+thead {
+    background-color: #003d66;
+    color: #eeeeee;
+}
+footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #efefef;
+    text-align: center;
+}

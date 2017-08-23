@@ -1,0 +1,48 @@
+@model SPM.Models.LicenseKey
+@using SPM.Services
+@using SPM.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>License Key</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Software)
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.Software)*@
+            @(Model.Software.Name)
+            
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @(Model.GetFullUsername())
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Key)
+        </dt>
+        <dd  style="overflow-wrap:break-word">
+            @Html.DisplayFor(model => model.Key)
+        </dd>
+    </dl>
+</div>
+<div>
+@if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
+{
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
+}
+else if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser && ((await UserEntityServices.GetCurrentUserEntity(User) as NormalUser).LicenseKeys.Any(l => l.Id == Model.Id)))
+{
+    <a asp-action="Unsubscribe" asp-route-id="@Model.Id" class="btn btn-primary fa fa-times">&ensp;Unsubscribe</a>
+}
+    <a href="javascript:history.go(-1)" class="btn btn-default fa fa-arrow-left">&ensp;Back</a>
+</div>

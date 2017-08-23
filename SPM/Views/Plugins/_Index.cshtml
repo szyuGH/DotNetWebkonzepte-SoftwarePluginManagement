@@ -1,0 +1,41 @@
+@model IEnumerable<SPM.Models.Plugin>
+
+@using SPM.Services
+@using SPM.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
+
+<table class="table table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RelatedSoftware)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Company)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr onclick="location.href = '@(Url.Action("Details", "Plugins", new { id = @item.Id}))'">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser && (await UserEntityServices.GetCurrentUserEntity(User) as NormalUser).SubscribedPlugin(item.Id))
+                    {
+                        <text><p style="color:#2a6f41;display:inline"> (Subscribed)</p></text>
+                    }
+                </td>
+                <td>
+                    @(item.RelatedSoftware.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

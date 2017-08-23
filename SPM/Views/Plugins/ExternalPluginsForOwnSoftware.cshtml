@@ -1,0 +1,7 @@
+@model IEnumerable<SPM.Models.Plugin>
+@using SPM.Services
+@using SPM.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
+
+<h2>Foreign Plugins for our Softwares</h2>
+@await Html.PartialAsync("_Index")

@@ -1,0 +1,10 @@
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\bin\Debug\netcoreapp1.1\Software Plugin Management.deps.json
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\bin\Debug\netcoreapp1.1\Software Plugin Management.runtimeconfig.json
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\bin\Debug\netcoreapp1.1\Software Plugin Management.runtimeconfig.dev.json
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\bin\Debug\netcoreapp1.1\Software Plugin Management.dll
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\bin\Debug\netcoreapp1.1\Software Plugin Management.pdb
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\obj\Debug\netcoreapp1.1\Software Plugin Management.csprojResolveAssemblyReference.cache
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\obj\Debug\netcoreapp1.1\Software Plugin Management.AssemblyInfo.cs
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\obj\Debug\netcoreapp1.1\Software Plugin Management.dll
+C:\Users\Szyu\Documents\Visual Studio 2017\Projects\Software & Plugin Management\WebApplication2\obj\Debug\netcoreapp1.1\Software Plugin Management.pdb

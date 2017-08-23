@@ -1,0 +1,12 @@
+@model IEnumerable<SPM.Models.Plugin>
+@using SPM.Services
+@using SPM.Models.UserEntities
+@inject IUserEntityLoader UserEntityServices
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Browse</h2>
+
+@await Html.PartialAsync("_Index")

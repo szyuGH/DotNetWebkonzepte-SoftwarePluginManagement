@@ -1,0 +1,34 @@
+@model List<Tuple<ApplicationUser, SPM.Models.UserEntities.EditorUser>>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Editors</h2>
+
+<table class="table table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th><a asp-action="Create" class="btn btn-success fa fa-plus">&ensp;Add</a></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (Tuple<ApplicationUser, SPM.Models.UserEntities.EditorUser> item in Model) {
+        <tr>
+            <td>@item.Item1.UserName</td>
+            <td>@item.Item1.Email</td>
+            <td>@item.Item2.FirstName</td>
+            <td>@item.Item2.LastName</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Item1.Id" class="btn btn-info fa fa-pencil">&ensp;Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.Item1.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
