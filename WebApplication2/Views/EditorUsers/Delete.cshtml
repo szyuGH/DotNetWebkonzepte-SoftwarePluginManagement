@@ -7,7 +7,7 @@
 
 <h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this Editor?</h3>
 <div>
     <h4>EditorUser</h4>
     <hr />
@@ -17,8 +17,8 @@
     
     <form asp-action="Delete">
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            <a asp-action="Index">Back to List</a>
+            <button type="submit" class="btn btn-info fa fa-save">&ensp;Delete</button>
+            <a href="javascript:history.go(-1)" class="btn btn-default fa fa-arrow-left">&ensp;Back</a>
         </div>
     </form>
 </div>
