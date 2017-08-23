@@ -28,6 +28,12 @@
             <a asp-action="Details" asp-controller="Softwares" asp-route-id="@Model.RelatedSoftware.Id">@Model.RelatedSoftware.Name</a>
         </dd>
         <dt>
+            Owner
+        </dt>
+        <dd>
+            @Model.Company.Name
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd>

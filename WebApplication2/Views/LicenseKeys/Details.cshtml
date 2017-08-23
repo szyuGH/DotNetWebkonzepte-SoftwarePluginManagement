@@ -38,7 +38,11 @@
 <div>
 @if ((await UserEntityServices.GetCurrentUserEntityType(User)) >= UserEntityType.Editor)
 {
-    <a asp-action="Delete" asp-route-id="@Model.Id"><i class="fa fa-trash-o"></i> Delete</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning fa fa-minus">&ensp;Delete</a>
 }
-    <a asp-controller="Softwares" asp-action="Details" asp-route-id="@Model.Software.Id">Back to Software</a>
+else if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser && ((await UserEntityServices.GetCurrentUserEntity(User) as NormalUser).LicenseKeys.Any(l => l.Id == Model.Id)))
+{
+    <a asp-action="Unsubscribe" asp-route-id="@Model.Id" class="btn btn-primary fa fa-times">&ensp;Unsubscribe</a>
+}
+    <a href="javascript:history.go(-1)" class="btn btn-default fa fa-arrow-left">&ensp;Back</a>
 </div>

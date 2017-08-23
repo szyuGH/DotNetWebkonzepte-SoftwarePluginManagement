@@ -199,9 +199,12 @@ namespace WebApplication2.Controllers
             }
 
             var licenseKey = await _context.LicenseKey
-                .Include(l => l.Software)
-                .Include(l => l.User)
+                .Include(m => m.Software)
                 .SingleOrDefaultAsync(m => m.Id == id);
+            var lazyLoad = await _context.LicenseKey
+                .Include(m => m.User)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
             if (licenseKey == null)
             {
                 return NotFound();
@@ -216,12 +219,11 @@ namespace WebApplication2.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var licenseKey = await _context.LicenseKey
-                .Include(l => l.User)
                 .Include(l => l.Software)
                 .SingleOrDefaultAsync(m => m.Id == id);
             _context.LicenseKey.Remove(licenseKey);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Softwares", new { id = licenseKey.Software.Id });
         }
 
 
