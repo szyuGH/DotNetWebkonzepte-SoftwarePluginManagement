@@ -12,6 +12,10 @@
             <tr onclick="location.href = '@(Url.Action("Details", "Plugins", new { id = @item.Id}))'">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
+                    @if ((await UserEntityServices.GetCurrentUserEntityType(User)) == UserEntityType.NormalUser && (await UserEntityServices.GetCurrentUserEntity(User) as NormalUser).SubscribedPlugin(item.Id))
+                    {
+                        <text><p style="color:#2a6f41;display:inline"> (Subscribed)</p></text>
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Company.Name)
